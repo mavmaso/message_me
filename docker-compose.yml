@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    container_name: message_me
+    hostname: message_me
+    build: .
+    image: src_message_me:latest
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec bundle exec rails s -p 3000 -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    links:
+      - db
+    volumes:
+      - .:/fonte
+
+  db:
+    container_name: db-message_me
+    hostname: db-message_me
+    image: postgres:9.4.1
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+volumes:
+  pg-data:
